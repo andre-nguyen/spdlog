@@ -72,6 +72,19 @@ target_link_libraries(spdlog PUBLIC Threads::Threads)
 spdlog_enable_warnings(spdlog)
 
 #---------------------------------------------------------------------------------------
+# Shared library version
+#---------------------------------------------------------------------------------------
+add_library(spdlog_shared SHARED src/spdlog.cpp ${SPDLOG_ALL_HEADERS})
+add_library(spdlog::spdlog_shared ALIAS spdlog_shared)
+
+target_compile_definitions(spdlog_shared PUBLIC SPDLOG_COMPILED_LIB)
+target_include_directories(spdlog_shared PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/include>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
+target_link_libraries(spdlog_shared PUBLIC Threads::Threads)
+spdlog_enable_warnings(spdlog_shared)
+
+#---------------------------------------------------------------------------------------
 # Header only version
 #---------------------------------------------------------------------------------------
 add_library(spdlog_header_only INTERFACE)
